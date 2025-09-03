@@ -6,6 +6,6 @@ declare namespace NodeJS {
     SPOTIFY_AUTHORIZE: string;
     SPOTIFY_TOKEN_ENDPOINT: string;
     SPOTIFY_API: string;
-    
+    SPOTIFY_API_TRACK: string;
   }
 }
