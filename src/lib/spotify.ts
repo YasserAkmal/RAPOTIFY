@@ -15,6 +15,7 @@ export const scopes = [
   "user-read-private",
   "playlist-read-private",
   "user-read-recently-played",
+  "user-top-read",
 ].join(" ");
 
 export function buildAuthorizeUrl(state: string, redirectUri: string) {

@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { SPOTIFY_API_TRACK } from "@/lib/spotify";
 
 type Me = {
   id: string;
@@ -10,9 +9,16 @@ type Me = {
   email?: string;
   images?: { url: string }[];
 };
+type Track = {
+  id: string;
+  name: string;
+  artists: { name: string }[];
+  album: { images: { url: string }[] };
+};
 
 export default function Homepage() {
   const [me, setMe] = useState<Me | null>(null);
+  const [tracks, setTracks] = useState<Track[]>([]);
   const [loading, setLoading] = useState(false);
 
   const fetchMe = async () => {
@@ -29,9 +35,22 @@ export default function Homepage() {
     }
     setLoading(false);
   };
+  const fetchTopTracks = async () => {
+    const r = await fetch("/api/top-tracks", { credentials: "include" });
+    const d = await r.json();
+    if (d.retry) {
+      await fetch("/api/refresh", { method: "POST", credentials: "include" });
+      const r2 = await fetch("/api/top-tracks", { credentials: "include" });
+      const d2 = await r2.json();
+      setTracks(d2.items || []);
+    } else {
+      setTracks(d.items || []);
+    }
+  };
 
   useEffect(() => {
     fetchMe();
+    fetchTopTracks();
   }, []);
   const router = useRouter();
   const logout = async () => {
@@ -86,6 +105,36 @@ export default function Homepage() {
           </div>
         )
       )}
+      <div className="flex flex-col gap-3 mt-8 w-full max-w-lg">
+        <button
+          onClick={fetchTopTracks}
+          className="px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-600"
+        >
+          Get Top Tracks
+        </button>
+
+        {tracks.length > 0 && (
+          <ul className="mt-4 space-y-4">
+            {tracks.map((t) => (
+              <li key={t.id} className="flex items-center gap-3">
+                <img
+                  src={t.album.images?.[0]?.url || "/favicon.ico"}
+                  alt={t.name}
+                  width={50}
+                  height={50}
+                  className="rounded"
+                />
+                <div>
+                  <p className="font-medium">{t.name}</p>
+                  <p className="text-sm text-gray-500">
+                    {t.artists.map((a) => a.name).join(", ")}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </main>
   );
 }
