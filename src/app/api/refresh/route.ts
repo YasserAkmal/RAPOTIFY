@@ -24,10 +24,11 @@ export async function POST(req: NextRequest) {
     res.cookies.set("spotify_expires_at", String(token.expires_at), {
       ...cookieOpts,
       maxAge: 60 * 60 * 24 * 30,
-    });
+    }); 
     return res;
   } catch (e) {
     console.error(e);
+
     return NextResponse.json({ error: "Failed to refresh" }, { status: 500 });
   }
 }
