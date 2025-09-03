@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { SPOTIFY_API_TRACK } from "@/lib/spotify";
 
 type Me = {
   id: string;
@@ -20,6 +21,10 @@ export default function Homepage() {
     const d = await r.json();
     if (d.retry) {
       await fetch("/api/refresh", { method: "POST", credentials: "include" });
+      await fetch(SPOTIFY_API_TRACK, {
+        method: "GET",
+        credentials: "include",
+      });
       const r2 = await fetch("/api/me", { credentials: "include" });
       const d2 = await r2.json();
       setMe(d2);

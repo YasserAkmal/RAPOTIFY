@@ -13,7 +13,6 @@ const cookieOpts = {
 export async function GET(req: NextRequest) {
   const state = crypto.randomBytes(16).toString("hex");
 
-  // 🚀 paksa pakai IP 172.16.1.10:3000
   const redirectUri = `https://rapotify.vercel.app/api/callback`;
 
   const url = buildAuthorizeUrl(state, redirectUri);

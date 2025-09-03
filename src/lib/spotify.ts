@@ -8,6 +8,7 @@ export const SPOTIFY_REDIRECT_URI = getEnv("SPOTIFY_REDIRECT_URI");
 export const SPOTIFY_AUTHORIZE = getEnv("SPOTIFY_AUTHORIZE");
 export const SPOTIFY_TOKEN_ENDPOINT = getEnv("SPOTIFY_TOKEN_ENDPOINT");
 export const SPOTIFY_API = getEnv("SPOTIFY_API");
+export const SPOTIFY_API_TRACK = getEnv("SPOTIFY_API_TRACK");
 
 export const scopes = [
   "user-read-email",
