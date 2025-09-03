@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
   const state = crypto.randomBytes(16).toString("hex");
 
   // 🚀 paksa pakai IP 172.16.1.10:3000
-  const redirectUri = `http://127.0.0.1:3000/api/callback`;
+  const redirectUri = `https://rapotify.vercel.app/api/callback`;
 
   const url = buildAuthorizeUrl(state, redirectUri);
 
