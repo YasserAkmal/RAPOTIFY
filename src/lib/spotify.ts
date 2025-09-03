@@ -85,7 +85,9 @@ export async function refreshAccessToken(refresh_token: string) {
 
 export async function apiGet<T = any>(path: string, access_token: string) {
   const res = await axios.get<T>(`${SPOTIFY_API}${path}`, {
-    headers: { Authorization: `Bearer ${access_token}` },
+    headers: {
+      Authorization: `Bearer ${access_token}`, 
+    },
   });
   return res.data;
 }
