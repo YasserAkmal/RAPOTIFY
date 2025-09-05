@@ -5,6 +5,7 @@ import { apiGet } from "@/lib/spotify";
 export async function GET(req: NextRequest) {
   try {
     const access = req.cookies.get("spotify_access_token")?.value;
+    console.log("Access token from cookie:", access);
     const exp = Number(req.cookies.get("spotify_expires_at")?.value || 0);
     const now = Math.floor(Date.now() / 1000);
 
