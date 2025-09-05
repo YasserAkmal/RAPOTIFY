@@ -39,7 +39,7 @@ export async function exchangeCodeForToken(code: string, redirectUri: string) {
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
       Authorization:
-        "Basic " +
+        "Basic " + 
         Buffer.from(`${SPOTIFY_CLIENT_ID}:${SPOTIFY_CLIENT_SECRET}`).toString(
           "base64"
         ),

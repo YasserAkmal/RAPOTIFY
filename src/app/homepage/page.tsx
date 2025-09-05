@@ -27,36 +27,50 @@ export default function Homepage() {
   const [me, setMe] = useState<Me | null>(null);
   const [tracks, setTracks] = useState<Track[]>([]);
   const [loading, setLoading] = useState(false);
-  
 
   const fetchMe = async () => {
     setLoading(true);
-    const r = await fetch("/api/me", { credentials: "include" });
-    const d = await r.json();
-    if (d.retry) {
-      await fetch("/api/refresh", { method: "POST", credentials: "include" });
-      const r2 = await fetch("/api/me", { credentials: "include" });
-      const d2 = await r2.json();
-      setMe(d2);
-    } else {
-      setMe(d);
+    try {
+      console.log("Fetching /api/me");
+      const r = await fetch("/api/me", { credentials: "include" });
+      const d = await r.json();
+      if (d.retry) {
+        console.log("Token expired, refreshing...");
+        await fetch("/api/refresh", { method: "POST", credentials: "include" });
+        const r2 = await fetch("/api/me", { credentials: "include" });
+        const d2 = await r2.json();
+        setMe(d2);
+        console.log("Fetched user after refresh:", d2);
+      } else {
+        setMe(d);
+        console.log("Fetched user:", d);
+      }
+    } catch (err) {
+      console.error("Error in fetchMe:", err);
     }
     setLoading(false);
   };
   const fetchTopTracks = async () => {
-    let r = await fetch("/api/top-songs", { credentials: "include" });
-    if (r.status === 401) {
-      await fetch("/api/refresh", { method: "POST", credentials: "include" });
-      r = await fetch("/api/top-songs", { credentials: "include" });
+    try {
+      console.log("Fetching /api/top-songs");
+      let r = await fetch("/api/top-songs", { credentials: "include" });
+      if (r.status === 401) {
+        console.log("Top songs 401, refreshing token...");
+        await fetch("/api/refresh", { method: "POST", credentials: "include" });
+        r = await fetch("/api/top-songs", { credentials: "include" });
+      }
+      if (!r.ok) {
+        const errText = await r.text();
+        console.error("API top-songs error:", r.status, errText);
+        return;
+      }
+      const d = await r.json();
+      setTracks(d.items || []);
+      console.log("Fetched top tracks:", d.items);
+    } catch (err) {
+      console.error("Error in fetchTopTracks:", err);
     }
-    if (!r.ok) {
-      console.error("API top-songs error:", r.status, await r.text());
-      return; // jangan parse JSON kalau gagal
-    }
-    const d = await r.json();
-    setTracks(d.items || []);
   };
-
 
   useEffect(() => {
     fetchMe();
@@ -147,4 +161,3 @@ export default function Homepage() {
     </main>
   );
 }
-
