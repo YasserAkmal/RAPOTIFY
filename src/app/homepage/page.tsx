@@ -14,12 +14,20 @@ type Track = {
   name: string;
   artists: { name: string }[];
   album: { images: { url: string }[] };
+  duration_ms: number;
 };
+function formatDuration(ms: number): string {
+  const totalSeconds = Math.floor(ms / 1000);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+}
 
 export default function Homepage() {
   const [me, setMe] = useState<Me | null>(null);
   const [tracks, setTracks] = useState<Track[]>([]);
   const [loading, setLoading] = useState(false);
+  
 
   const fetchMe = async () => {
     setLoading(true);
@@ -115,28 +123,28 @@ export default function Homepage() {
           Get Top Tracks
         </button>
 
-        {tracks.length > 0 && (
-          <ul className="mt-4 space-y-4">
-            {tracks.map((t) => (
-              <li key={t.id} className="flex items-center gap-3">
-                <img
-                  src={t.album.images?.[0]?.url || "/favicon.ico"}
-                  alt={t.name}
-                  width={50}
-                  height={50}
-                  className="rounded"
-                />
-                <div>
-                  <p className="font-medium">{t.name}</p>
-                  <p className="text-sm text-gray-500">
-                    {t.artists.map((a) => a.name).join(", ")}
-                  </p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
+        {tracks.map((t) => (
+          <li key={t.id} className="flex items-center gap-3">
+            <img
+              src={t.album.images?.[0]?.url || "/favicon.ico"}
+              alt={t.name}
+              width={50}
+              height={50}
+              className="rounded"
+            />
+            <div className="flex-1">
+              <p className="font-medium">{t.name}</p>
+              <p className="text-sm text-gray-500">
+                {t.artists.map((a) => a.name).join(", ")}
+              </p>
+            </div>
+            <span className="text-sm text-gray-400">
+              {formatDuration(t.duration_ms)}
+            </span>
+          </li>
+        ))}
       </div>
     </main>
   );
 }
+
