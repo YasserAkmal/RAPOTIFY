@@ -7,7 +7,6 @@ export async function GET(req: NextRequest) {
   if (!token) return NextResponse.json({ retry: true }, { status: 401 });
 
   try {
-    // ganti limit/time_range sesuai selera
     const data = await apiGet(
       "/me/top/tracks?limit=10&time_range=medium_term",
       token
