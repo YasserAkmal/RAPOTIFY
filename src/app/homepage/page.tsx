@@ -36,17 +36,19 @@ export default function Homepage() {
     setLoading(false);
   };
   const fetchTopTracks = async () => {
-    const r = await fetch("/api/top-tracks", { credentials: "include" });
-    const d = await r.json();
-    if (d.retry) {
+    let r = await fetch("/api/top-songs", { credentials: "include" });
+    if (r.status === 401) {
       await fetch("/api/refresh", { method: "POST", credentials: "include" });
-      const r2 = await fetch("/api/top-tracks", { credentials: "include" });
-      const d2 = await r2.json();
-      setTracks(d2.items || []);
-    } else {
-      setTracks(d.items || []);
+      r = await fetch("/api/top-songs", { credentials: "include" });
     }
+    if (!r.ok) {
+      console.error("API top-songs error:", r.status, await r.text());
+      return; // jangan parse JSON kalau gagal
+    }
+    const d = await r.json();
+    setTracks(d.items || []);
   };
+
 
   useEffect(() => {
     fetchMe();
