@@ -96,7 +96,7 @@ export default function Homepage() {
             alt={me.display_name}
             width={100}
             height={100}
-            className="rounded-full"
+            className=""
           />
           <h2 className="text-2xl font-semibold">{me.display_name}</h2>
           {me.email && <p className="text-gray-600">{me.email}</p>}

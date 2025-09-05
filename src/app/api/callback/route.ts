@@ -38,7 +38,6 @@ export async function GET(req: NextRequest) {
     ...cookieOpts,
     maxAge: 60 * 60 * 24 * 30,
   });
-  // bersihkan cookies sementara
   res.cookies.set("spotify_state", "", { ...cookieOpts, maxAge: 0 });
   res.cookies.set("spotify_redirect_uri", "", { ...cookieOpts, maxAge: 0 });
   return res;
