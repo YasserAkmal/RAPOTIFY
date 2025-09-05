@@ -39,7 +39,7 @@ export async function exchangeCodeForToken(code: string, redirectUri: string) {
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
       Authorization:
-        "Basic " + 
+        "Basic " +
         Buffer.from(`${SPOTIFY_CLIENT_ID}:${SPOTIFY_CLIENT_SECRET}`).toString(
           "base64"
         ),
@@ -84,9 +84,10 @@ export async function refreshAccessToken(refresh_token: string) {
 }
 
 export async function apiGet<T = any>(path: string, access_token: string) {
+  console.log("🚀 ~ apiGet ~ access_token:", access_token);
   const res = await axios.get<T>(`${SPOTIFY_API}${path}`, {
     headers: {
-      Authorization: `Bearer ${access_token}`, 
+      Authorization: `Bearer ${access_token}`,
     },
   });
   return res.data;
