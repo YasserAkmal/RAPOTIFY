@@ -4,16 +4,16 @@ import { apiGet } from "@/lib/spotify";
 
 export async function GET(req: NextRequest) {
   try {
+    const accessTest = req.cookies.get("spotify_access_token");
     const access = req.cookies.get("spotify_access_token")?.value;
     console.log("Access token from cookie:", access);
+    console.log("Access token from accessTest:", accessTest);
     const exp = Number(req.cookies.get("spotify_expires_at")?.value || 0);
     const now = Math.floor(Date.now() / 1000);
 
     if (!access || now >= exp) {
-      // Minta client retry setelah refresh (biar simpel)
       return NextResponse.json({ retry: true });
     }
-
     const me = await apiGet("/me", access);
     return NextResponse.json(me);
   } catch (e) {
