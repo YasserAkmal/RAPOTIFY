@@ -124,7 +124,7 @@ export default function Home() {
               height={123}
             />
             <div className="gap-2">
-              <table className="table-auto border-spacing-7">
+              <table className="table-auto border-1 border-collapse border border-slate-400">
                 <tbody>
                   <tr>
                     <td>Nama Induk Siswa</td>
