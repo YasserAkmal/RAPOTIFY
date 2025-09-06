@@ -164,21 +164,21 @@ export default function Home() {
           <table className="table-auto border-collapse border border-slate-400 mt-2 w-full text-center">
             <thead>
               <tr>
-                <th className="border border-slate-300 px-3">No</th>
-                <th className="border border-slate-300 px-3">Mata Pelajaran</th>
-                <th className="border border-slate-300 px-3">Guru Pengajar</th>
-                <th className="border border-slate-300 px-3">Nilai</th>
-                <th className="border border-slate-300 px-3">Predikat</th>
+                <th className="border border-slate-300 px-3">NO</th>
+                <th className="border border-slate-300 px-3">MATA PELAAJARAN</th>
+                <th className="border border-slate-300 px-3">GURU PENGAMPU</th>
+                <th className="border border-slate-300 px-3">NILAI</th>
+                <th className="border border-slate-300 px-3">PREDIKAT</th>
               </tr>
             </thead>
             <tbody>
               {tracks.map((t, idx) => (
                 <tr key={t.id}>
                   <td className="border border-slate-300">{idx + 1}</td>
-                  <td className="border border-slate-300 text-left">
+                  <td className="border border-slate-300 text-left pl-3">
                     {t.name}
                   </td>
-                  <td className="border border-slate-300 text-left">
+                  <td className="border border-slate-300 text-left pl-3">
                     {t.artists.map((a) => a.name).join(", ")}
                   </td>
                   <td className="border border-slate-300">
