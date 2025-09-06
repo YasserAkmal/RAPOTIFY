@@ -90,7 +90,7 @@ export default function Home() {
 
   return (
     <main className="flex flex-wrap justify-center items-center min-h-screen ">
-      <div className="w-[1080px] x-[1920px] bg-[url(/img/BG.png)] bg-cover flex flex-col items-center justify-center">
+      <div className="w-[1080px] h-[1920px] bg-[url(/img/BG.png)] bg-cover flex flex-col items-center justify-center">
         {/* Header Sekolah */}
         <div className="flex w-full items-center justify-center pl-4 border-b-2 ">
           <svg
@@ -116,9 +116,7 @@ export default function Home() {
           <h1 className="font-bold text-2xl">A. PROFIL PESERTA DIDIK</h1>
           <div className="flex gap-4 mt-2">
             <img
-              src={
-                me?.images?.[1]?.url?.toString()
-              }
+              src={me?.images?.[1]?.url?.toString()}
               alt="Profil Peserta Didik"
               className="w-[164px] h-[123px]"
             />
