@@ -90,7 +90,7 @@ export default function Home() {
 
   return (
     <main className="flex flex-wrap justify-center items-center min-h-screen ">
-      <div className="w-[1080px] bg-[url(/img/BG.png)] bg-cover flex flex-col items-center justify-center">
+      <div className="w-[1080px] x-[1920px] bg-[url(/img/BG.png)] bg-cover flex flex-col items-center justify-center">
         {/* Header Sekolah */}
         <div className="flex w-full items-center justify-center pl-4 border-b-2 ">
           <svg
@@ -116,7 +116,9 @@ export default function Home() {
           <h1 className="font-bold text-2xl">A. PROFIL PESERTA DIDIK</h1>
           <div className="flex gap-4 mt-2">
             <Image
-              src={me?.images?.[0]?.url?.toString() || "/img/default-profile.png"}
+              src={
+                me?.images?.[0]?.url?.toString() || "/img/default-profile.png"
+              }
               alt="Profil Peserta Didik"
               width={164}
               height={123}
@@ -164,6 +166,7 @@ export default function Home() {
               <tr>
                 <th className="border border-slate-300 px-3">No</th>
                 <th className="border border-slate-300 px-3">Mata Pelajaran</th>
+                <th className="border border-slate-300 px-3">Guru Pengajar</th>
                 <th className="border border-slate-300 px-3">Nilai</th>
                 <th className="border border-slate-300 px-3">Predikat</th>
               </tr>
@@ -172,20 +175,21 @@ export default function Home() {
               {tracks.map((t, idx) => (
                 <tr key={t.id}>
                   <td>{idx + 1}</td>
+                  <td className="text-left">{t.name}</td>
                   <td className="text-left">
-                    {t.name} – {t.artists.map((a) => a.name).join(", ")}
+                    {t.artists.map((a) => a.name).join(", ")}
                   </td>
                   <td>{formatDuration(t.duration_ms)}</td>
                   <td>{gradeByAvg(t.duration_ms, avgMs)}</td>
                 </tr>
               ))}
-              {avgMs > 0 && (
-                <p className="text-sm text-gray-500 mt-1">
-                  Rata-rata durasi: {formatDuration(avgMs)}
-                </p>
-              )}
             </tbody>
           </table>
+          {avgMs > 0 && (
+            <p className="text-sm text-gray-500 mt-1">
+              Rata-rata durasi: {formatDuration(avgMs)}
+            </p>
+          )}
         </div>
 
         {/* Footer tanda tangan */}
