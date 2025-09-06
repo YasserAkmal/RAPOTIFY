@@ -24,7 +24,10 @@ function avgDurationMs(list: { duration_ms: number }[]) {
   return Math.round(list.reduce((s, t) => s + t.duration_ms, 0) / list.length);
 }
 
-function gradeByAvg(durationMs: number, avgMs: number): "A"|"B"|"C"|"D"|"E" {
+function gradeByAvg(
+  durationMs: number,
+  avgMs: number
+): "A" | "B" | "C" | "D" | "E" {
   const diffSec = (durationMs - avgMs) / 1000;
   if (diffSec >= 0) return "A";
   if (diffSec >= -10) return "B";
@@ -32,7 +35,6 @@ function gradeByAvg(durationMs: number, avgMs: number): "A"|"B"|"C"|"D"|"E" {
   if (diffSec >= -30) return "D";
   return "E";
 }
-
 
 function formatDuration(ms: number): string {
   const totalSeconds = Math.floor(ms / 1000);
@@ -71,8 +73,8 @@ export default function Home() {
     if (!r.ok) return;
     const d = await r.json();
     setTracks(d.items || []);
-      setTracks(d.items || []);
-      setAvgMs(avgDurationMs(d.items || []));
+    setTracks(d.items || []);
+    setAvgMs(avgDurationMs(d.items || []));
   };
 
   const logout = async () => {
@@ -90,7 +92,7 @@ export default function Home() {
     <main className="flex flex-wrap justify-center items-center min-h-screen ">
       <div className="w-[1080px] bg-[url(/img/BG.png)] bg-cover flex flex-col items-center justify-center">
         {/* Header Sekolah */}
-        <div className="flex w-full items-center justify-center p-4 border-b-2 ">
+        <div className="flex w-full items-center justify-center pl-4 border-b-2 ">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="120"
@@ -114,7 +116,7 @@ export default function Home() {
           <h1 className="font-bold text-2xl">A. PROFIL PESERTA DIDIK</h1>
           <div className="flex gap-4 mt-2">
             <Image
-              src={me?.images?.[0]?.url || "/img/default-user.jpg"}
+              src={me?.images?.[0]?.url?.toString() || "/img/default-profile.png"}
               alt="Profil Peserta Didik"
               width={164}
               height={123}
@@ -155,7 +157,7 @@ export default function Home() {
         </div>
 
         {/* Data Akademik */}
-        <div className="w-full p-4">
+        <div className="w-full pl-4">
           <h1 className="font-bold text-2xl mt-5 w-full">B. DATA AKADEMIK</h1>
           <table className="table-auto border-collapse border border-slate-400 mt-2 w-full text-center">
             <thead>
@@ -170,7 +172,7 @@ export default function Home() {
               {tracks.map((t, idx) => (
                 <tr key={t.id}>
                   <td>{idx + 1}</td>
-                  <td>
+                  <td className="text-left">
                     {t.name} – {t.artists.map((a) => a.name).join(", ")}
                   </td>
                   <td>{formatDuration(t.duration_ms)}</td>
