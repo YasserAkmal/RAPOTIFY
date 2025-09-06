@@ -115,13 +115,12 @@ export default function Home() {
         <div className="mt-5 w-full pl-4">
           <h1 className="font-bold text-2xl">A. PROFIL PESERTA DIDIK</h1>
           <div className="flex gap-4 mt-2">
-            <Image
+            <img
               src={
-                me?.images?.[0]?.url?.toString() || "/img/default-profile.png"
+                me?.images?.[1]?.url?.toString() || "/img/default-profile.png"
               }
               alt="Profil Peserta Didik"
-              width={164}
-              height={123}
+              className="w-[164px] h-[123px]"
             />
             <div className="gap-2">
               <table className="table-auto">
@@ -159,32 +158,32 @@ export default function Home() {
         </div>
 
         {/* Data Akademik */}
-        <div className="w-full pl-4">
+        <div className="w-full px-4">
           <h1 className="font-bold text-2xl mt-5 w-full">B. DATA AKADEMIK</h1>
-          <table className="table-auto border-collapse border border-slate-400 mt-2 w-full text-center">
+          <table className="table-auto border-collapse border border-black-400 mt-2 w-full text-center">
             <thead>
               <tr>
-                <th className="border border-slate-300 px-3">NO</th>
-                <th className="border border-slate-300 px-3">MATA PELAAJARAN</th>
-                <th className="border border-slate-300 px-3">GURU PENGAMPU</th>
-                <th className="border border-slate-300 px-3">NILAI</th>
-                <th className="border border-slate-300 px-3">PREDIKAT</th>
+                <th className="border border-black-300 px-3">NO</th>
+                <th className="border border-black-300 px-3">MATA PELAJARAN</th>
+                <th className="border border-black-300 px-3">GURU PENGAMPU</th>
+                <th className="border border-black-300 px-3">NILAI</th>
+                <th className="border border-black-300 px-3">PREDIKAT</th>
               </tr>
             </thead>
             <tbody>
               {tracks.map((t, idx) => (
                 <tr key={t.id}>
-                  <td className="border border-slate-300">{idx + 1}</td>
-                  <td className="border border-slate-300 text-left pl-3">
+                  <td className="border border-black-300">{idx + 1}</td>
+                  <td className="border border-black-300 text-left pl-3">
                     {t.name}
                   </td>
-                  <td className="border border-slate-300 text-left pl-3">
+                  <td className="border border-black-300 text-left pl-3">
                     {t.artists.map((a) => a.name).join(", ")}
                   </td>
-                  <td className="border border-slate-300">
+                  <td className="border border-black-300">
                     {formatDuration(t.duration_ms)}
                   </td>
-                  <td className="border border-slate-300">
+                  <td className="border border-black-300">
                     {gradeByAvg(t.duration_ms, avgMs)}
                   </td>
                 </tr>
@@ -204,7 +203,7 @@ export default function Home() {
             <p className="font-bold text-lg">Catatan Khusus :</p>
             <p>
               {tracks.length > 0
-                ? "Siswa aktif mendengarkan musik!"
+                ? "gatau dah, males gw ngisinya. isi aja sendiri ye."
                 : "Belum ada data track."}
             </p>
           </div>
