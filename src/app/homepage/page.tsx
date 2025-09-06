@@ -90,7 +90,7 @@ export default function Home() {
 
   return (
     <main className="flex flex-wrap justify-center items-center min-h-screen ">
-      <div className="w-[1080px] h-[1920px] bg-[url(/img/BG.png)] bg-cover flex flex-col items-center justify-center">
+      <div className="w-[540px] h-[960px] bg-[url(/img/BG.png)] bg-cover flex flex-col items-center justify-center">
         {/* Header Sekolah */}
         <div className="flex w-full items-center justify-center pl-4 border-b-2 ">
           <svg
