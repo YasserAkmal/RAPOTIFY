@@ -124,7 +124,7 @@ export default function Home() {
               height={123}
             />
             <div className="gap-2">
-              <table className="table-auto border-1 border-collapse border border-slate-400">
+              <table className="table-auto">
                 <tbody>
                   <tr>
                     <td>Nama Induk Siswa</td>
@@ -174,13 +174,19 @@ export default function Home() {
             <tbody>
               {tracks.map((t, idx) => (
                 <tr key={t.id}>
-                  <td>{idx + 1}</td>
-                  <td className="text-left">{t.name}</td>
-                  <td className="text-left">
+                  <td className="border border-slate-300">{idx + 1}</td>
+                  <td className="border border-slate-300 text-left">
+                    {t.name}
+                  </td>
+                  <td className="border border-slate-300 text-left">
                     {t.artists.map((a) => a.name).join(", ")}
                   </td>
-                  <td>{formatDuration(t.duration_ms)}</td>
-                  <td>{gradeByAvg(t.duration_ms, avgMs)}</td>
+                  <td className="border border-slate-300">
+                    {formatDuration(t.duration_ms)}
+                  </td>
+                  <td className="border border-slate-300">
+                    {gradeByAvg(t.duration_ms, avgMs)}
+                  </td>
                 </tr>
               ))}
             </tbody>
