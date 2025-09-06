@@ -117,7 +117,7 @@ export default function Home() {
           <div className="flex gap-4 mt-2">
             <img
               src={
-                me?.images?.[1]?.url?.toString() || "/img/default-profile.png"
+                me?.images?.[1]?.url?.toString()
               }
               alt="Profil Peserta Didik"
               className="w-[164px] h-[123px]"
