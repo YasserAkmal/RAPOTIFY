@@ -7,7 +7,10 @@ export async function GET(req: NextRequest) {
   if (!token) return NextResponse.json({ retry: true }, { status: 401 });
 
   try {
-    const data = await apiGet("/me/top/artists?time_range=short_term", token);
+    const data = await apiGet(
+      "/me/top/tracks?limit=10&time_range=short_term",
+      token
+    );
     return NextResponse.json(data);
   } catch (e) {
     console.error("Spotify API error", e);
