@@ -109,7 +109,7 @@ export default function Home() {
     await waitImagesLoaded(node);
 
     const dataUrl = await htmlToImage.toPng(node, {
-      pixelRatio: 1.5, // ⬅️ 540×960 -> 1080×1920
+      pixelRatio: 1.5, 
       cacheBust: true,
       style: { transform: "none" },
       filter: (el) => !el.classList?.contains("no-capture"),
@@ -124,7 +124,7 @@ export default function Home() {
   return (
     <main className="flex flex-wrap justify-center items-center min-h-screen ">
       <div
-        className="w-[720px] h-[1280px] bg-[url(/img/BG.png)] bg-cover flex flex-col items-center py-40"
+        className="w-[720px] h-[1280px] bg-[url(/img/BG.png)] bg-cover flex flex-col items-center py-15"
         ref={targetRef}
       >
         {/* Header Sekolah */}
@@ -278,7 +278,7 @@ export default function Home() {
           Top Track
         </button>
         <button
-          className="no-capture absolute bottom-3 right-3 px-3 py-2 bg-blue-600 text-white rounded"
+          className="no-capture px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
           onClick={download2x}
           disabled={loading}
         >
