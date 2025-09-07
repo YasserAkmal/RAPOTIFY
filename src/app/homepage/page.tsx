@@ -111,12 +111,9 @@ async function waitImagesLoaded(node: HTMLElement) {
    await waitImagesLoaded(node);
 
    const dataUrl = await htmlToImage.toPng(node, {
-     pixelRatio: 2, // ⬅️ 540×960 -> 1080×1920
+     pixelRatio: 1.5, // ⬅️ 540×960 -> 1080×1920
      cacheBust: true,
-     // penting untuk gambar eksternal
-     // (Next/Image sering aman karena same-origin via /_next/image, tapi ini membantu)
-     style: { transform: "none" }, // jaga-jaga jika ada scale CSS
-     // filter untuk mengecualikan elemen tertentu (misal tombol)
+     style: { transform: "none" }, 
      filter: (el) => !el.classList?.contains("no-capture"),
    });
 
