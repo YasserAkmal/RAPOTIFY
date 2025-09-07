@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { downloadAs1080x1920 } from "@/utils/download1080";
+import * as htmlToImage from "html-to-image";
 
 type Me = {
   id: string;
@@ -44,13 +44,12 @@ function formatDuration(ms: number): string {
 }
 
 export default function Home() {
-  const ref = useRef<HTMLDivElement>(null);
+  const targetRef = useRef<HTMLDivElement>(null);
   const [me, setMe] = useState<Me | null>(null);
   const [tracks, setTracks] = useState<Track[]>([]);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [avgMs, setAvgMs] = useState(0);
-
   const fetchMe = async () => {
     setLoading(true);
     const r = await fetch("/api/me", { credentials: "include" });
@@ -89,12 +88,44 @@ export default function Home() {
     fetchMe();
     fetchTopTracks();
   }, []);
+  async function waitImagesLoaded(node: HTMLElement) {
+    const imgs = Array.from(node.querySelectorAll("img"));
+    // decode() menunggu gambar render (lebih akurat dari onload)
+    await Promise.all(
+      imgs.map((img) =>
+        img.decode ? img.decode().catch(() => {}) : Promise.resolve()
+      )
+    );
+    // juga tunggu font web
+    if ((document as any).fonts?.ready) {
+      await (document as any).fonts.ready;
+    }
+  }
+  async function download2x() {
+    const node = targetRef.current;
+    if (!node) return;
+
+    // Pastikan semua img sudah ke-render
+    await waitImagesLoaded(node);
+
+    const dataUrl = await htmlToImage.toPng(node, {
+      pixelRatio: 1.5, 
+      cacheBust: true,
+      style: { transform: "none" },
+      filter: (el) => !el.classList?.contains("no-capture"),
+    });
+
+    const a = document.createElement("a");
+    a.href = dataUrl;
+    a.download = "raport.png";
+    a.click();
+  }
 
   return (
-    <main className="flex flex-wrap justify-center items-center ">
+    <main className="flex flex-wrap justify-center items-center min-h-screen ">
       <div
-        ref={ref}
-        className="w-[720px] h-[1280px] bg-[url('/img/BG.png')] bg-cover bg-no-repeat bg-center flex flex-col items-center py-16"
+        className="w-[720px] h-[1280px] bg-[url(/img/BG.png)] bg-cover flex flex-col items-center py-15"
+        ref={targetRef}
       >
         {/* Header Sekolah */}
         <div className="flex w-full items-center justify-center pl-4 border-b-2 ">
@@ -216,17 +247,18 @@ export default function Home() {
           <div className="flex flex-row w-full justify-between px-20 mt-10">
             <div className="gap-20 flex flex-col items-center bg-[url(/img/ttd-aceng.png)] bg-contain bg-no-repeat bg-center h-full  w-full">
               <p>Kepala Sekolah</p>
-              <p>Yasser Thareq Akmal,S.Kom</p>
+              <p>Yasser Thareq Akmal</p>
             </div>
             <div className="gap-20 flex flex-col items-center bg-[url(/img/ttd-mupid.png)] bg-contain bg-no-repeat bg-center h-full w-full">
               <p>Wali Kelas</p>
-              <p>Rizki Mufid,S.Kom</p>
+              <p>Rizki Mufid</p>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="no-capture flex flex-col m-4 gap-2">
+      {/* Control Buttons */}
+      <div className="flex flex-col m-4 gap-2">
         <button
           onClick={logout}
           className="px-4 py-2 bg-red-500 text-white rounded"
@@ -234,12 +266,23 @@ export default function Home() {
           Keluar
         </button>
         <button
-          onClick={() =>
-            ref.current && downloadAs1080x1920(ref.current, 720, 1280)
-          }
-          className="no-capture mt-4 px-3 py-2 bg-blue-600 text-white rounded"
+          onClick={fetchMe}
+          className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
         >
-          Download 1080×1920
+          Refresh
+        </button>
+        <button
+          onClick={fetchTopTracks}
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          Top Track
+        </button>
+        <button
+          className="no-capture px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+          onClick={download2x}
+          disabled={loading}
+        >
+          Download 
         </button>
       </div>
     </main>
