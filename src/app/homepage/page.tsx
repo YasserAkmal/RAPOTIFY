@@ -4,19 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import html2canvas from "html2canvas";
 
-const downloadDiv = async () => {
-  const element = document.getElementById("printableArea"); // div target (540x960)
-  if (!element) return;
 
-  const canvas = await html2canvas(element, {
-    scale: 2, // ⬅️ ini penting, biar hasil 2x lebih besar (1080x1920)
-  });
-
-  const link = document.createElement("a");
-  link.download = "result.png";
-  link.href = canvas.toDataURL("image/png");
-  link.click();
-};
 
 type Me = {
   id: string;
@@ -101,6 +89,19 @@ export default function Home() {
     fetchMe();
     fetchTopTracks();
   }, []);
+  const downloadDiv = async () => {
+    const element = document.getElementById("printableArea"); // div target (540x960)
+    if (!element) return;
+
+    const canvas = await html2canvas(element, {
+      scale: 2,
+    });
+
+    const link = document.createElement("a");
+    link.download = "result.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  };
 
   return (
     <main className="flex flex-wrap justify-center items-center min-h-screen ">
