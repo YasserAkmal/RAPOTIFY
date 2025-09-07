@@ -18,7 +18,6 @@ const downloadDiv = async () => {
   link.click();
 };
 
-
 type Me = {
   id: string;
   display_name: string;
@@ -259,7 +258,12 @@ export default function Home() {
         >
           Top Track
         </button>
-        <button onClick={downloadDiv}>Download</button>
+        <button
+          onClick={downloadDiv}
+          className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+        >
+          Download
+        </button>
       </div>
     </main>
   );
