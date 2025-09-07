@@ -50,6 +50,7 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [avgMs, setAvgMs] = useState(0);
+ 
   const fetchMe = async () => {
     setLoading(true);
     const r = await fetch("/api/me", { credentials: "include" });
@@ -122,9 +123,9 @@ export default function Home() {
   }
 
   return (
-    <main className="flex flex-wrap justify-center items-center min-h-screen ">
+    <main className="flex flex-wrap justify-center items-center ">
       <div
-        className="w-[720px] h-[1280px] bg-[url(/img/BG.png)] bg-cover flex flex-col items-center py-15"
+        className="w-[720px] h-[1280px] bg-[url(/img/BG.png)] bg-contain bg-no-repeat bg-center flex flex-col items-center py-15"
         ref={targetRef}
       >
         {/* Header Sekolah */}
@@ -257,7 +258,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Control Buttons */}
       <div className="flex flex-col m-4 gap-2">
         <button
           onClick={logout}
