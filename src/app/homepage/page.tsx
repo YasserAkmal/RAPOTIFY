@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import html2canvas from "html2canvas";
+import * as htmlToImage from "html-to-image";
 
 
 
@@ -46,6 +46,7 @@ function formatDuration(ms: number): string {
 }
 
 export default function Home() {
+   const targetRef = useRef<HTMLDivElement>(null);
   const [me, setMe] = useState<Me | null>(null);
   const [tracks, setTracks] = useState<Track[]>([]);
   const [loading, setLoading] = useState(false);
@@ -89,25 +90,47 @@ export default function Home() {
     fetchMe();
     fetchTopTracks();
   }, []);
-  const downloadDiv = async () => {
-    const element = document.getElementById("printableArea"); // div target (540x960)
-    if (!element) return;
+async function waitImagesLoaded(node: HTMLElement) {
+  const imgs = Array.from(node.querySelectorAll("img"));
+  // decode() menunggu gambar render (lebih akurat dari onload)
+  await Promise.all(
+    imgs.map((img) =>
+      img.decode ? img.decode().catch(() => {}) : Promise.resolve()
+    )
+  );
+  // juga tunggu font web
+  if ((document as any).fonts?.ready) {
+    await (document as any).fonts.ready;
+  }
+}
+ async function download2x() {
+   const node = targetRef.current;
+   if (!node) return;
 
-    const canvas = await html2canvas(element, {
-      scale: 2,
-    });
+   // Pastikan semua img sudah ke-render
+   await waitImagesLoaded(node);
 
-    const link = document.createElement("a");
-    link.download = "result.png";
-    link.href = canvas.toDataURL("image/png");
-    link.click();
-  };
+   const dataUrl = await htmlToImage.toPng(node, {
+     pixelRatio: 2, // ⬅️ 540×960 -> 1080×1920
+     cacheBust: true,
+     // penting untuk gambar eksternal
+     // (Next/Image sering aman karena same-origin via /_next/image, tapi ini membantu)
+     style: { transform: "none" }, // jaga-jaga jika ada scale CSS
+     // filter untuk mengecualikan elemen tertentu (misal tombol)
+     filter: (el) => !el.classList?.contains("no-capture"),
+   });
+
+   const a = document.createElement("a");
+   a.href = dataUrl;
+   a.download = "raport.png";
+   a.click();
+ }
 
   return (
     <main className="flex flex-wrap justify-center items-center min-h-screen ">
       <div
         className="w-[540px] h-[960px] bg-[url(/img/BG.png)] bg-cover flex flex-col items-center justify-center"
-        id="printableArea"
+        ref={targetRef}
       >
         {/* Header Sekolah */}
         <div className="flex w-full items-center justify-center pl-4 border-b-2 ">
@@ -260,10 +283,11 @@ export default function Home() {
           Top Track
         </button>
         <button
-          onClick={downloadDiv}
-          className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
+          className="no-capture absolute bottom-3 right-3 px-3 py-2 bg-blue-600 text-white rounded"
+          onClick={download2x}
+          disabled={loading}
         >
-          Download
+          Download 1080×1920
         </button>
       </div>
     </main>
