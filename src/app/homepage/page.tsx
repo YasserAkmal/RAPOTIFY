@@ -2,7 +2,22 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
+import html2canvas from "html2canvas";
+
+const downloadDiv = async () => {
+  const element = document.getElementById("printableArea"); // div target (540x960)
+  if (!element) return;
+
+  const canvas = await html2canvas(element, {
+    scale: 2, // ⬅️ ini penting, biar hasil 2x lebih besar (1080x1920)
+  });
+
+  const link = document.createElement("a");
+  link.download = "result.png";
+  link.href = canvas.toDataURL("image/png");
+  link.click();
+};
+
 
 type Me = {
   id: string;
@@ -90,7 +105,10 @@ export default function Home() {
 
   return (
     <main className="flex flex-wrap justify-center items-center min-h-screen ">
-      <div className="w-[540px] h-[960px] bg-[url(/img/BG.png)] bg-cover flex flex-col items-center justify-center">
+      <div
+        className="w-[540px] h-[960px] bg-[url(/img/BG.png)] bg-cover flex flex-col items-center justify-center"
+        id="printableArea"
+      >
         {/* Header Sekolah */}
         <div className="flex w-full items-center justify-center pl-4 border-b-2 ">
           <svg
@@ -241,6 +259,7 @@ export default function Home() {
         >
           Top Track
         </button>
+        <button onClick={downloadDiv}>Download</button>
       </div>
     </main>
   );
