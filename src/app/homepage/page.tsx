@@ -244,7 +244,7 @@ async function waitImagesLoaded(node: HTMLElement) {
             </p>
           </div>
         </div>
-        <div className="flex justify-center items-center w-full flex-col">
+        <div className="flex justify-end items-center w-full flex-col">
           <p>Mengetahui,</p>
           <div className="flex flex-row w-full justify-between px-20 mt-10">
             <div className="gap-20 flex flex-col items-center bg-[url(/img/ttd-aceng.png)] bg-contain bg-no-repeat bg-center h-full  w-full">
