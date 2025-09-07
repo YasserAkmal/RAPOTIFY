@@ -93,8 +93,8 @@ export default function Home() {
   return (
     <main className="flex flex-wrap justify-center items-center ">
       <div
-        className="w-[540px] h-[960px] bg-[url(/img/BG.png)] bg-contain bg-no-repeat bg-center flex flex-col items-center py-15"
         ref={ref}
+        className="w-[720px] h-[1280px] bg-[url('/img/BG.png')] bg-cover bg-no-repeat bg-center flex flex-col items-center py-16"
       >
         {/* Header Sekolah */}
         <div className="flex w-full items-center justify-center pl-4 border-b-2 ">
@@ -226,7 +226,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="flex flex-col m-4 gap-2">
+      <div className="no-capture flex flex-col m-4 gap-2">
         <button
           onClick={logout}
           className="px-4 py-2 bg-red-500 text-white rounded"

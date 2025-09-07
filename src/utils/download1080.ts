@@ -49,9 +49,6 @@ export async function downloadAs1080x1920(
     height: 1920,
     pixelRatio: 1,
     cacheBust: true,
-    // Optional: background putih
-    // backgroundColor: "#fff",
-    // Pastikan tidak ada transform lain yang mengacaukan
     style: { transform: clone.style.transform, transformOrigin: "top left" },
     filter: (node) => !node.classList?.contains("no-capture"),
   });
