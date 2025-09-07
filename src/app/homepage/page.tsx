@@ -247,11 +247,11 @@ export default function Home() {
           <div className="flex flex-row w-full justify-between px-20 mt-10">
             <div className="gap-20 flex flex-col items-center bg-[url(/img/ttd-aceng.png)] bg-contain bg-no-repeat bg-center h-full  w-full">
               <p>Kepala Sekolah</p>
-              <p>Yasser Thareq Akmal</p>
+              <p>Yasser Thareq Akmal,S.Kom</p>
             </div>
             <div className="gap-20 flex flex-col items-center bg-[url(/img/ttd-mupid.png)] bg-contain bg-no-repeat bg-center h-full w-full">
               <p>Wali Kelas</p>
-              <p>Rizki Mufid</p>
+              <p>Rizki Mufid,S.Kom</p>
             </div>
           </div>
         </div>
@@ -263,26 +263,14 @@ export default function Home() {
           onClick={logout}
           className="px-4 py-2 bg-red-500 text-white rounded"
         >
-          Logout
-        </button>
-        <button
-          onClick={fetchMe}
-          className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
-        >
-          Refresh
-        </button>
-        <button
-          onClick={fetchTopTracks}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        >
-          Top Track
+          Keluar
         </button>
         <button
           className="no-capture px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
           onClick={download2x}
           disabled={loading}
         >
-          Download 1080×1920
+          Unduh Gambar 
         </button>
       </div>
     </main>
