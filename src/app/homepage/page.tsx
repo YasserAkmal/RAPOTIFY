@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import * as htmlToImage from "html-to-image";
+import { downloadAs1080x1920 } from "@/utils/download1080";
 
 type Me = {
   id: string;
@@ -44,13 +44,13 @@ function formatDuration(ms: number): string {
 }
 
 export default function Home() {
-  const targetRef = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
   const [me, setMe] = useState<Me | null>(null);
   const [tracks, setTracks] = useState<Track[]>([]);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [avgMs, setAvgMs] = useState(0);
- 
+
   const fetchMe = async () => {
     setLoading(true);
     const r = await fetch("/api/me", { credentials: "include" });
@@ -89,44 +89,12 @@ export default function Home() {
     fetchMe();
     fetchTopTracks();
   }, []);
-  async function waitImagesLoaded(node: HTMLElement) {
-    const imgs = Array.from(node.querySelectorAll("img"));
-    // decode() menunggu gambar render (lebih akurat dari onload)
-    await Promise.all(
-      imgs.map((img) =>
-        img.decode ? img.decode().catch(() => {}) : Promise.resolve()
-      )
-    );
-    // juga tunggu font web
-    if ((document as any).fonts?.ready) {
-      await (document as any).fonts.ready;
-    }
-  }
-  async function download2x() {
-    const node = targetRef.current;
-    if (!node) return;
-
-    // Pastikan semua img sudah ke-render
-    await waitImagesLoaded(node);
-
-    const dataUrl = await htmlToImage.toPng(node, {
-      pixelRatio: 1.5, 
-      cacheBust: true,
-      style: { transform: "none" },
-      filter: (el) => !el.classList?.contains("no-capture"),
-    });
-
-    const a = document.createElement("a");
-    a.href = dataUrl;
-    a.download = "raport.png";
-    a.click();
-  }
 
   return (
     <main className="flex flex-wrap justify-center items-center ">
       <div
         className="w-[540px] h-[960px] bg-[url(/img/BG.png)] bg-contain bg-no-repeat bg-center flex flex-col items-center py-15"
-        ref={targetRef}
+        ref={ref}
       >
         {/* Header Sekolah */}
         <div className="flex w-full items-center justify-center pl-4 border-b-2 ">
@@ -266,11 +234,12 @@ export default function Home() {
           Keluar
         </button>
         <button
-          className="no-capture px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600"
-          onClick={download2x}
-          disabled={loading}
+          onClick={() =>
+            ref.current && downloadAs1080x1920(ref.current, 720, 1280)
+          }
+          className="no-capture mt-4 px-3 py-2 bg-blue-600 text-white rounded"
         >
-          Unduh Gambar 
+          Download 1080×1920
         </button>
       </div>
     </main>
