@@ -4,8 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import * as htmlToImage from "html-to-image";
 
-
-
 type Me = {
   id: string;
   display_name: string;
@@ -46,7 +44,7 @@ function formatDuration(ms: number): string {
 }
 
 export default function Home() {
-   const targetRef = useRef<HTMLDivElement>(null);
+  const targetRef = useRef<HTMLDivElement>(null);
   const [me, setMe] = useState<Me | null>(null);
   const [tracks, setTracks] = useState<Track[]>([]);
   const [loading, setLoading] = useState(false);
@@ -90,43 +88,43 @@ export default function Home() {
     fetchMe();
     fetchTopTracks();
   }, []);
-async function waitImagesLoaded(node: HTMLElement) {
-  const imgs = Array.from(node.querySelectorAll("img"));
-  // decode() menunggu gambar render (lebih akurat dari onload)
-  await Promise.all(
-    imgs.map((img) =>
-      img.decode ? img.decode().catch(() => {}) : Promise.resolve()
-    )
-  );
-  // juga tunggu font web
-  if ((document as any).fonts?.ready) {
-    await (document as any).fonts.ready;
+  async function waitImagesLoaded(node: HTMLElement) {
+    const imgs = Array.from(node.querySelectorAll("img"));
+    // decode() menunggu gambar render (lebih akurat dari onload)
+    await Promise.all(
+      imgs.map((img) =>
+        img.decode ? img.decode().catch(() => {}) : Promise.resolve()
+      )
+    );
+    // juga tunggu font web
+    if ((document as any).fonts?.ready) {
+      await (document as any).fonts.ready;
+    }
   }
-}
- async function download2x() {
-   const node = targetRef.current;
-   if (!node) return;
+  async function download2x() {
+    const node = targetRef.current;
+    if (!node) return;
 
-   // Pastikan semua img sudah ke-render
-   await waitImagesLoaded(node);
+    // Pastikan semua img sudah ke-render
+    await waitImagesLoaded(node);
 
-   const dataUrl = await htmlToImage.toPng(node, {
-     pixelRatio: 1.5, // ⬅️ 540×960 -> 1080×1920
-     cacheBust: true,
-     style: { transform: "none" }, 
-     filter: (el) => !el.classList?.contains("no-capture"),
-   });
+    const dataUrl = await htmlToImage.toPng(node, {
+      pixelRatio: 1.5, // ⬅️ 540×960 -> 1080×1920
+      cacheBust: true,
+      style: { transform: "none" },
+      filter: (el) => !el.classList?.contains("no-capture"),
+    });
 
-   const a = document.createElement("a");
-   a.href = dataUrl;
-   a.download = "raport.png";
-   a.click();
- }
+    const a = document.createElement("a");
+    a.href = dataUrl;
+    a.download = "raport.png";
+    a.click();
+  }
 
   return (
     <main className="flex flex-wrap justify-center items-center min-h-screen ">
       <div
-        className="w-[720px] h-[1280px] bg-[url(/img/BG.png)] bg-cover flex flex-col items-center"
+        className="w-[720px] h-[1280px] bg-[url(/img/BG.png)] bg-cover flex flex-col items-center py-40"
         ref={targetRef}
       >
         {/* Header Sekolah */}
@@ -162,7 +160,7 @@ async function waitImagesLoaded(node: HTMLElement) {
               <table className="table-auto">
                 <tbody>
                   <tr>
-                    <td>Nama Induk Siswa</td>
+                    <td>Nomor Induk Siswa</td>
                     <td>:</td>
                     <td>{me?.id || "-"}</td>
                   </tr>

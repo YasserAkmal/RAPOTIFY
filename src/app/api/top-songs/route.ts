@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const data = await apiGet(
-      "/me/top/tracks?limit=10&time_range=short_term",
+      "/me/top/tracks?limit=15&time_range=short_term",
       token
     );
     return NextResponse.json(data);
