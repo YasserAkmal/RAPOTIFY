@@ -104,12 +104,11 @@ export default function Home() {
   async function download2x() {
     const node = targetRef.current;
     if (!node) return;
-
-    // Pastikan semua img sudah ke-render
+    
     await waitImagesLoaded(node);
 
-    const dataUrl = await htmlToImage.toPng(node, {
-      pixelRatio: 1.5, 
+    const dataUrl = await htmlToImage.toJpeg(node, {
+      pixelRatio: 1.5,
       cacheBust: true,
       style: { transform: "none" },
       filter: (el) => !el.classList?.contains("no-capture"),
@@ -117,7 +116,7 @@ export default function Home() {
 
     const a = document.createElement("a");
     a.href = dataUrl;
-    a.download = "raport.png";
+    a.download = "raport.jpg";
     a.click();
   }
 
