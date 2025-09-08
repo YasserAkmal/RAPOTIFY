@@ -151,7 +151,11 @@ export default function Home() {
           <h1 className="font-bold text-2xl">A. PROFIL PESERTA DIDIK</h1>
           <div className="flex gap-4 mt-2">
             <img
-              src={me?.images?.[1]?.url?.toString()}
+              src={
+                me?.images?.[1]?.url ||
+                me?.images?.[0]?.url ||
+                "/img/default-user.jpg"
+              }
               alt="Profil Peserta Didik"
               className="w-[164px] h-[123px]"
             />
@@ -246,11 +250,11 @@ export default function Home() {
           <div className="flex flex-row w-full justify-between px-20 mt-10">
             <div className="gap-20 flex flex-col items-center bg-[url(/img/ttd-aceng.png)] bg-contain bg-no-repeat bg-center h-full  w-full">
               <p>Kepala Sekolah</p>
-              <p>Yasser Thareq Akmal</p>
+              <p>Yasser Thareq Akmal,S.Kom</p>
             </div>
             <div className="gap-20 flex flex-col items-center bg-[url(/img/ttd-mupid.png)] bg-contain bg-no-repeat bg-center h-full w-full">
               <p>Wali Kelas</p>
-              <p>Rizki Mufid</p>
+              <p>Rizki Mufid,S.Kom</p>
             </div>
           </div>
         </div>
@@ -281,7 +285,7 @@ export default function Home() {
           onClick={download2x}
           disabled={loading}
         >
-          Download 
+          Download
         </button>
       </div>
     </main>
